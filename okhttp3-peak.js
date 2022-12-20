@@ -10,8 +10,20 @@ Java.perform(function () {
     }
 
     function interceptRequest(request) {
-        console.log(request.method() + " " + request.url() + " HTTP/1.1")
-        console.log("HOST: " + request.url())
+        var tester = request.url().toString()
+        var pathArray = tester.split( '/' );
+        var protocol = pathArray[0];
+        var fhost = pathArray[2];
+        var furl = protocol + '//' + fhost;
+
+        var newPathname = "";
+        for (i = 3; i < pathArray.length; i++) {
+            newPathname += "/";
+            newPathname += pathArray[i];
+        }
+
+        console.log(request.method() + " " + newPathname + " HTTP/1.1")
+        console.log("Host: " + fhost)
         console.log(request.headers().toString())
         var requestBody = request.body()
         if(requestBody){
